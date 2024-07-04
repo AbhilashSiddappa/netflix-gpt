@@ -1,8 +1,20 @@
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import Header from './Header'
+import {validateData} from "../utils/Validate"
 
 function Login() {
   const [signIn ,setSignIn] = useState(true)
+  const[errorMessage,setErrorMessage] =useState(null)
+  const email = useRef(null)
+  const password = useRef(null)
+  const name = useRef(null)
+
+  function handleButton(e){
+    e.preventDefault()
+
+const message = validateData(email.current.value,password.current.value)
+setErrorMessage(message)
+  }
 
   function handleSignIn(e){
     e.preventDefault()
@@ -19,17 +31,18 @@ function Login() {
     </div>
                   <form>
                     {signIn? "":<div className='name my-3'>
-<input className='w-full rounded-lg  bg-black bg-opacity-50 text-white outline-none  text-lg border-2 p-2' type='text' placeholder='Name'/>
+<input ref={name} className='w-full rounded-lg  bg-black bg-opacity-50 text-white outline-none  text-lg border-2 p-2' type='text' placeholder='Name'/>
 </div>}
                     
 <div className='email my-3'>
-<input className='w-full rounded-lg  bg-black bg-opacity-50 text-white outline-none  text-lg border-2 p-2' type='email' placeholder='Email'/>
+<input ref={email}  className='w-full rounded-lg  bg-black bg-opacity-50 text-white outline-none  text-lg border-2 p-2' type='email' placeholder='Email'/>
 </div>
 <div className='password my-3'>
-<input className='w-full rounded-lg  bg-black bg-opacity-50 text-white outline-none  text-lg border-2 p-2' type='password' placeholder='Password'/>
+<input ref={password} className='w-full rounded-lg  bg-black bg-opacity-50 text-white outline-none  text-lg border-2 p-2' type='password' placeholder='Password'/>
 </div>
+<div className='error-msg text-red-700 text-lg'>{errorMessage}</div>
 <div className='submit_btn'>
-  <button className='bg-red-600 text-white w-full rounded-lg text-lg p-2' >{signIn?"Sign In": "Sign Up"}</button>
+  <button className='bg-red-600 text-white w-full rounded-lg text-lg p-2' onClick={handleButton} >{signIn?"Sign In": "Sign Up"}</button>
 </div>
 
 <p className='text-white text-lg cursor-pointer p-2' onClick={handleSignIn}>{signIn?"New to Netflix ? Sign Up":"Already Registered ? Sign In Now"}</p>
